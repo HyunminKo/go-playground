@@ -1,0 +1,9 @@
+FROM golang:buster as builder
+
+WORKDIR /tmp/tiny-golang-image
+COPY . .
+
+RUN go mod init tiny && go get -u -d -v ./...
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o main webserver.go
+
+CMD ["./main"]
